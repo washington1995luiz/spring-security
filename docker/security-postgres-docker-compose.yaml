@@ -1,0 +1,15 @@
+services:
+  security_postgres_db:
+    image: postgres:17.4-alpine
+    container_name: security_postgres_db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: security123
+      POSTGRES_USER: root
+      POSTGRES_DB: auth_db
+    ports:
+      - "54330:5432"
+    volumes:
+      - auth_postgres_db_data:/var/lib/postgresql/data
+volumes:
+  auth_postgres_db_data:
