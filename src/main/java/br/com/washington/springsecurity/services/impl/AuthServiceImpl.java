@@ -14,7 +14,6 @@ import br.com.washington.springsecurity.security.AuthenticationService;
 import br.com.washington.springsecurity.services.AuthService;
 import br.com.washington.springsecurity.services.RolesService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,15 +34,15 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserResponseDTO login(LoginRequestDTO login) {
         Authentication authenticate = authenticationService.authentication(login.username(), login.password());
-        String token = authenticationService.generateToken(authenticate);
         User user = userRepository.findByUsername(login.username()).orElseThrow(UserNotFoundException::new);
+        String token = authenticationService.generateToken(authenticate);
         return new UserResponseDTO(user.getUsername(), token);
     }
 
     @Transactional
     @Override
     public UserResponseDTO signup(SignUpRequestDTO signup) {
-        System.out.println(signup);
+
         if (userRepository.findByUsername(signup.username()).isPresent()) {
             throw new UserAlreadyExistsException();
         }
@@ -55,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
 
         User saved = userRepository.save(user);
         Authentication authentication = authenticationService.authentication(saved.getUsername(), signup.password());
-        System.out.println(authentication);
+
         String token = authenticationService.generateToken(authentication);
         return new UserResponseDTO(saved.getUsername(), token);
     }

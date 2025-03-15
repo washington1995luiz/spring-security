@@ -17,10 +17,10 @@ public class JwtService {
 
     private final JwtEncoder encoder;
 
+
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();
         long expires = 3600L;
-
         String scopes = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));

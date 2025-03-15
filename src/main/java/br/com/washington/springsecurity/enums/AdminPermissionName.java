@@ -5,5 +5,4 @@ public enum AdminPermissionName {
     MANAGE_ROLES,
     VIEW_REPORTS,
     MANAGE_PERMISSIONS
-
 }

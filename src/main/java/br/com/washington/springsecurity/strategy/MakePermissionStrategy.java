@@ -14,6 +14,9 @@ import java.util.Optional;
 public class MakePermissionStrategy {
     private final Map<String, Enum<?>[]> permissionStrategy =
             Map.of(
+//                    RoleName.ROLE_ADMIN.name(), AdminPermissionName.values(),
+//                    RoleName.ROLE_CUSTOMER.name(), CustomerPermissionName.values(),
+//                    RoleName.ROLE_VENDOR.name(), VendorPermissionName.values()
                     RoleName.ADMIN.name(), AdminPermissionName.values(),
                     RoleName.CUSTOMER.name(), CustomerPermissionName.values(),
                     RoleName.VENDOR.name(), VendorPermissionName.values()

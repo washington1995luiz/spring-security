@@ -6,6 +6,4 @@ import java.util.Set;
 
 public interface PermissionService {
     Set<Permissions> setPermissions(String roleName);
-
-
 }
