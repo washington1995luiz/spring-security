@@ -12,6 +12,7 @@ import br.com.washington.springsecurity.exception.UserNotFoundException;
 import br.com.washington.springsecurity.repositoy.UserRepository;
 import br.com.washington.springsecurity.security.AuthenticationService;
 import br.com.washington.springsecurity.services.AuthService;
+import br.com.washington.springsecurity.services.RedisTokenService;
 import br.com.washington.springsecurity.services.RolesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -30,13 +31,15 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationService authenticationService;
     private final PasswordEncoder passwordEncoder;
     private final RolesService rolesService;
+    private final RedisTokenService redisTokenService;
 
     @Override
     public UserResponseDTO login(LoginRequestDTO login) {
         Authentication authenticate = authenticationService.authentication(login.username(), login.password());
-        User user = userRepository.findByUsername(login.username()).orElseThrow(UserNotFoundException::new);
         String token = authenticationService.generateToken(authenticate);
-        return new UserResponseDTO(user.getUsername(), token);
+        redisTokenService.revokeToken(authenticate.getName());
+        redisTokenService.saveActiveToken(authenticate.getName(), token);
+        return new UserResponseDTO(authenticate.getName(), token);
     }
 
     @Transactional
@@ -56,6 +59,9 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = authenticationService.authentication(saved.getUsername(), signup.password());
 
         String token = authenticationService.generateToken(authentication);
+
+        redisTokenService.saveActiveToken(authentication.getName(), token);
+
         return new UserResponseDTO(saved.getUsername(), token);
     }
 

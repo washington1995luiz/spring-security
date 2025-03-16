@@ -12,6 +12,13 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
+  redis:
+    host: localhost
+    port: 63790
+redis-variable:
+  blacklist: 'blacklist:'
+  whitelist: 'active_token:'
+  time-to-expires: 7200 # Two hours in seconds
 jwt:
   private:
     key: classpath:app.key

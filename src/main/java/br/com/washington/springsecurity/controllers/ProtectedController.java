@@ -19,12 +19,13 @@ public class ProtectedController {
 
 
     @GetMapping(value = "/adm")
-    public String adm(){
+    public String adm() {
+
         return "Okay, you are administrator.";
     }
 
     @GetMapping(value = "/roles")
-    public String roles(){
+    public String roles() {
         return "Okay, you have roles.";
     }
 }
